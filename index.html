@@ -9,7 +9,15 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
       axios
-        .get("http://localhost:3000/users")
+        .post(
+          "http://localhost:3000/users",
+          { foo: "bar" },
+          {
+            headers: {
+              "X-Token": "some token",
+            },
+          }
+        )
         .then((response) => response.data)
         .then((users) => document.write(JSON.stringify(users)));
     </script>
