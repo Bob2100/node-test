@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
       axios
-        .get("/users")
+        .get("http://localhost:3000/users")
         .then((response) => response.data)
         .then((users) => document.write(JSON.stringify(users)));
     </script>
