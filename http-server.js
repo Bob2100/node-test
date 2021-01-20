@@ -11,12 +11,14 @@ http.createServer((request, response) => {
   } else if ((method == 'GET' || method == 'POST') && url == '/users') {
     response.setHeader('Content-Type', 'application/json');
     response.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
+    response.setHeader('Access-Control-Allow-Credentials', 'true');
     response.end(JSON.stringify([{ name: 'Tom', age: 20 }]));
   } else if (method == 'OPTIONS' && url == '/users') {
     response.writeHead(200, {
       "Access-Control-Allow-Origin": "http://localhost:3001",
       "Access-Control-Allow-Headers": "X-Token,Content-Type",
       "Access-Control-Allow-Methods": "GET,POST,PUT",
+      "Access-Control-Allow-Credentials": "true",
     });
     response.end();
   }
