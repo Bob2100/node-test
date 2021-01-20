@@ -10,9 +10,10 @@ function request(url, callback) {
   originRequest(url, options, callback);
 }
 
-const url = 'https://www.dy2018.com/i/103075.html';
+const url = 'http://f10.eastmoney.com/NewFinanceAnalysis/MainTargetAjax?type=1&code=SH600519';
 request(url, (err, response, body) => {
-  const html = iconv.decode(body, "gb2312");
-  const $ = cheerio.load(html);
-  console.log($('.title_all h1').text());
+  // const html = iconv.decode(body, "gb2312");
+  // const $ = cheerio.load(html);
+  // console.log($('.title_all h1').text());
+  console.log(body.toString());
 });

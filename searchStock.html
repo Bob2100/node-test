@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      股票代码
+      <input type="text" id="code" value="SH600519" />
+      <input type="button" value="查询" onClick="search()" />
+    </div>
+    <div id="stocks">
+      <table border="1px">
+        <thead>
+          <th>日期</th>
+          <th>基本每股收益</th>
+          <th>每股净资产</th>
+          <th>每股经营现金流</th>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      function search() {
+        axios
+          .get(`/s/${document.querySelector("#code").value}`)
+          .then((response) => response.data)
+          .then((finances) => {
+            const tbody = document.querySelector("#tbody");
+            tbody.innerHTML = "";
+            finances.forEach((finance) => {
+              const tr = document.createElement("tr");
+              const td1 = document.createElement("td");
+              const td2 = document.createElement("td");
+              const td3 = document.createElement("td");
+              const td4 = document.createElement("td");
+              td1.innerText = finance.date;
+              td2.innerText = finance.jbmgsy;
+              td3.innerText = finance.mgjzc;
+              td4.innerText = finance.mgjyxjl;
+              tr.appendChild(td1);
+              tr.appendChild(td2);
+              tr.appendChild(td3);
+              tr.appendChild(td4);
+              tbody.appendChild(tr);
+            });
+          });
+      }
+    </script>
+  </body>
+</html>
