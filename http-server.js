@@ -10,6 +10,7 @@ http.createServer((request, response) => {
     });
   } else if (method == 'GET' && url == '/users') {
     response.setHeader('Content-Type', 'application/json');
+    response.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
     response.end(JSON.stringify([{ name: 'Tom', age: 20 }]));
   }
 }).listen(3000);
