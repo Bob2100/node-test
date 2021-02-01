@@ -3,9 +3,61 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <title>Document</title>
   </head>
   <body>
-    水果市场
+    <div id="app">
+      <ul>
+        <li v-for="fruit in fruits" :key="fruit._id">
+          {{fruit.name}} - {{fruit.price}}
+        </li>
+      </ul>
+      <el-pagination
+        layout="prev, pager, next"
+        @current-change="currentChange"
+        :total="total"
+        :page-size="count"
+      >
+      </el-pagination>
+    </div>
+
+    <script>
+      let app = new Vue({
+        el: "#app",
+        data: {
+          page: 1,
+          count: 2,
+          total: 0,
+          fruits: [],
+        },
+        created() {
+          this.getData();
+        },
+        methods: {
+          currentChange(page) {
+            this.page = page;
+            this.getData();
+          },
+          getData() {
+            axios
+              .get(`/api/list?page=${this.page}&count=${this.count}`)
+              .then((response) => response.data)
+              .then(({ result }) => {
+                this.fruits = result.fruits;
+                this.total = result.totalCount;
+              });
+          },
+        },
+      });
+    </script>
   </body>
 </html>

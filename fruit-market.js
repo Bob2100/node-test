@@ -11,18 +11,30 @@ app.get('/fruit-market', (request, response) => {
 
 app.get('/api/list', async (request, response) => {
   try {
-    const { page, countsPerPage } = request.query;
-    const fruits = await monogodb
-      .col('fruits')
+    const { page, count } = request.query;
+    const fruitCol = monogodb.col('fruits');
+
+    const fruits = await fruitCol
       .find()
-      .skip((page - 1) * countsPerPage)
-      .limit(Number(countsPerPage))
+      .skip((page - 1) * count)
+      .limit(Number(count))
       .toArray();
-    response.end(JSON.stringify({ code: 0, result: fruits }, null, 2));
+
+    const totalCount = await fruitCol.find().count();
+    response.end(JSON.stringify({
+      code: 0,
+      result: {
+        totalCount,
+        fruits
+      }
+    }));
 
   } catch (error) {
     console.log(error);
-    response.end(JSON.stringify({ code: -1, message: error.message }, null, 2));
+    response.end(JSON.stringify({
+      code: -1,
+      message: error.message
+    }));
   }
 });
 
