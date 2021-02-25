@@ -29,6 +29,13 @@ const Fruit = sequelize.define(
       amount() {
         return this.getDataValue('stock') + 'kg';
       }
+    },
+    setterMethods: {
+      amount(val) {
+        const index = val.indexOf('kg');
+        const stock = val.slice(0, index);
+        this.setDataValue('stock', stock);
+      }
     }
   });
 
@@ -39,5 +46,16 @@ Fruit.sync({ force: true }).then(() => {
   Fruit.findAll().then(fruits => {
     console.log(JSON.stringify(fruits));
     console.log(fruits[0].amount);
+
+    //update
+    const fruit = fruits[0];
+    fruit.amount = '150kg';
+    fruit.save().then(() => {
+      //query after update
+      Fruit.findAll().then(fruits => {
+        console.log(JSON.stringify(fruits));
+      });
+    });
+
   });
 });
