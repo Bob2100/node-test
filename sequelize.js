@@ -16,7 +16,8 @@ const Fruit = sequelize.define(
     stock: { type: Sequelize.INTEGER, defaultValue: 0 }
   },
   {
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true
   });
 
 //sync.
