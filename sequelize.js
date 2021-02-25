@@ -11,7 +11,14 @@ const sequelize = new Sequelize('test', 'root', '123456', {
 const Fruit = sequelize.define(
   'fruit',
   {
-    name: Sequelize.STRING(20),
+    name: {
+      type: Sequelize.STRING(20),
+      get() {
+        const name = this.getDataValue('name');
+        const price = this.getDataValue('price');
+        return `${name}(价格:${price})`;
+      }
+    },
     price: { type: Sequelize.FLOAT, allowNUull: false },
     stock: { type: Sequelize.INTEGER, defaultValue: 0 }
   },
