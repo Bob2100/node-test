@@ -8,14 +8,19 @@ const sequelize = new Sequelize('test', 'root', '123456', {
 });
 
 //model - table
-const Fruit = sequelize.define('fruit', {
-  name: Sequelize.STRING(20),
-  price: { type: Sequelize.FLOAT, allowNUull: false },
-  stock: { type: Sequelize.INTEGER, defaultValue: 0 }
-});
+const Fruit = sequelize.define(
+  'fruit',
+  {
+    name: Sequelize.STRING(20),
+    price: { type: Sequelize.FLOAT, allowNUull: false },
+    stock: { type: Sequelize.INTEGER, defaultValue: 0 }
+  },
+  {
+    timestamps: false
+  });
 
 //sync.
-Fruit.sync().then(() => {
+Fruit.sync({ force: true }).then(() => {
   return Fruit.create({ name: '香蕉', price: 3.5 });
 }).then(() => {
   Fruit.findAll().then(fruits => {
