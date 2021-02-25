@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Bob2100/node-test/issues"
   },
-  "homepage": "https://github.com/Bob2100/node-test#readme"
+  "homepage": "https://github.com/Bob2100/node-test#readme",
+  "dependencies": {
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.5.0"
+  }
 }
