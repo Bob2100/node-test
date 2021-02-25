@@ -24,7 +24,12 @@ const Fruit = sequelize.define(
   },
   {
     timestamps: false,
-    freezeTableName: true
+    freezeTableName: true,
+    getterMethods: {
+      amount() {
+        return this.getDataValue('stock') + 'kg';
+      }
+    }
   });
 
 //sync.
@@ -33,5 +38,6 @@ Fruit.sync({ force: true }).then(() => {
 }).then(() => {
   Fruit.findAll().then(fruits => {
     console.log(JSON.stringify(fruits));
+    console.log(fruits[0].amount);
   });
 });
