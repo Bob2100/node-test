@@ -15,4 +15,10 @@ const Fruit = sequelize.define('fruit', {
 });
 
 //sync.
-Fruit.sync();
+Fruit.sync().then(() => {
+  return Fruit.create({ name: '香蕉', price: 3.5 });
+}).then(() => {
+  Fruit.findAll().then(fruits => {
+    console.log(JSON.stringify(fruits));
+  });
+});
