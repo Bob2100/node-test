@@ -52,30 +52,30 @@ Fruit.classify = function (name) {
   return tropicFruits.includes(name) ? '热带水果' : '其他水果';
 }
 
-console.log(Fruit.classify('草莓'));
+// console.log(Fruit.classify('草莓'));
 
 //sync.
-Fruit.sync({ force: true })
-  .then(() => {
-    return Fruit.create({ name: '香蕉', price: -3.5 });
-  })
-  .then(() => {
-    Fruit.findAll().then(fruits => {
-      console.log(JSON.stringify(fruits));
-      console.log(fruits[0].amount);
+async function main() {
+  try {
+    await Fruit.sync({ force: true });
+    await Fruit.create({ name: '香蕉', price: 3.5 });
 
-      //update
-      const fruit = fruits[0];
-      fruit.amount = '150kg';
-      fruit.save().then(() => {
-        //query after update
-        Fruit.findAll().then(fruits => {
-          console.log(JSON.stringify(fruits));
-        });
-      });
+    // const fruits = await Fruit.findAll();
+    // console.log(JSON.stringify(fruits));
+    // console.log(fruits[0].amount);
 
-    });
-  })
-  .catch((error) => {
-    console.error(error.message);
-  });
+    // //update
+    // const fruit = fruits[0];
+    // fruit.amount = '150kg';
+    // const result = await fruit.save();
+    // console.log(result.get());
+
+    // find by one
+    const result = await Fruit.findOne({ where: { name: '香蕉' } });
+    console.log(JSON.stringify(result));
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+main();
