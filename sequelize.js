@@ -66,7 +66,11 @@ async function main() {
     // console.log(JSON.stringify(result));
 
     //更新
-    const result = await Fruit.update({ price: 5 }, { where: { id: 1 } });
+    // const result = await Fruit.update({ price: 5 }, { where: { id: 1 } });
+    // console.log(result);
+
+    //删除
+    const result = await Fruit.destroy({ where: { id: 1 } });
     console.log(result);
 
     //查询操作符
