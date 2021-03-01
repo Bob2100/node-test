@@ -62,8 +62,12 @@ async function main() {
     await Fruit.create({ name: '苹果', price: 6 });
 
     // const result = await Fruit.max('price');
-    const result = await Fruit.sum('price');
-    console.log(JSON.stringify(result));
+    // const result = await Fruit.sum('price');
+    // console.log(JSON.stringify(result));
+
+    //更新
+    const result = await Fruit.update({ price: 5 }, { where: { id: 1 } });
+    console.log(result);
 
     //查询操作符
     // const Op = Sequelize.Op;
@@ -76,8 +80,8 @@ async function main() {
     // });
     // console.log(JSON.stringify(result));
 
-    // const fruits = await Fruit.findAll();
-    // console.log(JSON.stringify(fruits));
+    const fruits = await Fruit.findAll();
+    console.log(JSON.stringify(fruits));
     // console.log(fruits[0].amount);
 
     // //update
