@@ -46,6 +46,14 @@ const Fruit = sequelize.define(
     }
   });
 
+//模型扩展
+Fruit.classify = function (name) {
+  const tropicFruits = ['芒果', '榴莲'];
+  return tropicFruits.includes(name) ? '热带水果' : '其他水果';
+}
+
+console.log(Fruit.classify('草莓'));
+
 //sync.
 Fruit.sync({ force: true })
   .then(() => {
