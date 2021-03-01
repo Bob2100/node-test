@@ -59,6 +59,18 @@ async function main() {
   try {
     await Fruit.sync({ force: true });
     await Fruit.create({ name: '香蕉', price: 3.5 });
+    await Fruit.create({ name: '苹果', price: 6 });
+
+    //查询操作符
+    const Op = Sequelize.Op;
+    const result = await Fruit.findAll({
+      where: {
+        price: {
+          [Op.gt]: 5
+        }
+      }
+    });
+    console.log(JSON.stringify(result));
 
     // const fruits = await Fruit.findAll();
     // console.log(JSON.stringify(fruits));
@@ -71,8 +83,8 @@ async function main() {
     // console.log(result.get());
 
     // find by one
-    const result = await Fruit.findOne({ where: { name: '香蕉' } });
-    console.log(JSON.stringify(result));
+    // const result = await Fruit.findOne({ where: { name: '香蕉' } });
+    // console.log(JSON.stringify(result));
 
   } catch (error) {
     console.log(error);
