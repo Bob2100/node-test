@@ -19,7 +19,14 @@ const Fruit = sequelize.define(
         return `${name}(价格:${price})`;
       }
     },
-    price: { type: Sequelize.FLOAT, allowNUull: false },
+    price: {
+      type: Sequelize.FLOAT,
+      allowNull: false,
+      validate: {
+        isFloat: { msg: '价格字段必须输入数字' },
+        min: { args: [0], msg: '价格字段必须大于0' }
+      }
+    },
     stock: { type: Sequelize.INTEGER, defaultValue: 0 }
   },
   {
@@ -40,22 +47,27 @@ const Fruit = sequelize.define(
   });
 
 //sync.
-Fruit.sync({ force: true }).then(() => {
-  return Fruit.create({ name: '香蕉', price: 3.5 });
-}).then(() => {
-  Fruit.findAll().then(fruits => {
-    console.log(JSON.stringify(fruits));
-    console.log(fruits[0].amount);
+Fruit.sync({ force: true })
+  .then(() => {
+    return Fruit.create({ name: '香蕉', price: -3.5 });
+  })
+  .then(() => {
+    Fruit.findAll().then(fruits => {
+      console.log(JSON.stringify(fruits));
+      console.log(fruits[0].amount);
 
-    //update
-    const fruit = fruits[0];
-    fruit.amount = '150kg';
-    fruit.save().then(() => {
-      //query after update
-      Fruit.findAll().then(fruits => {
-        console.log(JSON.stringify(fruits));
+      //update
+      const fruit = fruits[0];
+      fruit.amount = '150kg';
+      fruit.save().then(() => {
+        //query after update
+        Fruit.findAll().then(fruits => {
+          console.log(JSON.stringify(fruits));
+        });
       });
-    });
 
+    });
+  })
+  .catch((error) => {
+    console.error(error.message);
   });
-});
