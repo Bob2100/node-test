@@ -55,7 +55,7 @@ Fruit.classify = function (name) {
 // console.log(Fruit.classify('草莓'));
 
 //sync.
-async function main() {
+async function fruitMain() {
   try {
     await Fruit.sync({ force: true });
     await Fruit.create({ name: '香蕉', price: 3.5 });
@@ -102,4 +102,26 @@ async function main() {
     console.log(error);
   }
 }
-main();
+
+const Player = sequelize.define('player', { name: Sequelize.STRING });
+const Team = sequelize.define('team', { name: Sequelize.STRING });
+Player.belongsTo(Team);
+Team.hasMany(Player);
+
+async function sequelizeMain() {
+  await sequelize.sync({ force: true });
+  await Team.create({ name: '火箭' });
+  await Player.bulkCreate([{ name: '哈登', teamId: 1 }, { name: '保罗', teamId: 1 }]);
+
+  //1 端关联查询
+  // const players = await Player.findAll({ include: [Team] });
+  // console.log(JSON.stringify(players, null, 2));
+
+  //n 端关联查询
+  const team = await Team.findOne({ where: { name: '火箭' }, include: [Player] });
+  console.log(JSON.stringify(team, null, 2));
+
+}
+
+sequelizeMain();
+
