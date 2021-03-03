@@ -47,10 +47,10 @@ const Fruit = sequelize.define(
   });
 
 //模型扩展
-Fruit.classify = function (name) {
-  const tropicFruits = ['芒果', '榴莲'];
-  return tropicFruits.includes(name) ? '热带水果' : '其他水果';
-}
+// Fruit.classify = function (name) {
+//   const tropicFruits = ['芒果', '榴莲'];
+//   return tropicFruits.includes(name) ? '热带水果' : '其他水果';
+// }
 
 // console.log(Fruit.classify('草莓'));
 
@@ -103,12 +103,12 @@ async function fruitMain() {
   }
 }
 
-const Player = sequelize.define('player', { name: Sequelize.STRING });
-const Team = sequelize.define('team', { name: Sequelize.STRING });
-Player.belongsTo(Team);
-Team.hasMany(Player);
+// const Player = sequelize.define('player', { name: Sequelize.STRING });
+// const Team = sequelize.define('team', { name: Sequelize.STRING });
+// Player.belongsTo(Team);
+// Team.hasMany(Player);
 
-async function sequelizeMain() {
+async function sequelizeOneToMany() {
   await sequelize.sync({ force: true });
   await Team.create({ name: '火箭' });
   await Player.bulkCreate([{ name: '哈登', teamId: 1 }, { name: '保罗', teamId: 1 }]);
@@ -123,5 +123,30 @@ async function sequelizeMain() {
 
 }
 
-sequelizeMain();
+// sequelizeOneToMany();
+const Category = sequelize.define('category', { name: Sequelize.STRING });
+Fruit.FruitCategory = Fruit.belongsToMany(Category, {
+  through: 'FruitCategory'
+});
+async function sequelizeManyToMany() {
+  await sequelize.sync({ force: true });
+  await Fruit.create({
+    name: '香蕉',
+    price: 10,
+    categories: [{ id: 1, name: '热带' }, { id: 2, name: '温带' }]
+  }, {
+    include: [Fruit.FruitCategory]
+  });
 
+  //多对多联合查询
+  const fruit = await Fruit.findOne({
+    where: { name: '香蕉' },
+    include: [
+      {
+        model: Category,
+      }
+    ]
+  });
+  console.log(JSON.stringify(fruit, null, 2));
+}
+sequelizeManyToMany();
